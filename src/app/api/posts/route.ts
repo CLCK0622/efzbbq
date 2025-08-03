@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from "next-auth/next"
-import { authConfig } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { sql } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
@@ -8,31 +7,39 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const search = searchParams.get('search')
 
-    let query = `
-      SELECT 
-        p.*,
-        u.email,
-        u.created_at as user_created_at,
-        pr.student_id,
-        pr.real_name,
-        pr.is_verified,
-        pr.is_admin
-      FROM posts p
-      LEFT JOIN users u ON p.user_id = u.id
-      LEFT JOIN profiles pr ON p.user_id = pr.id
-      WHERE 1=1
-    `
-
-    const params: string[] = []
-
+    let posts
     if (search) {
-      query += ` AND p.content ILIKE $${params.length + 1}`
-      params.push(`%${search}%`)
+      posts = await sql`
+        SELECT 
+          p.*,
+          u.email,
+          u.created_at as user_created_at,
+          pr.student_id,
+          pr.real_name,
+          pr.is_verified,
+          pr.is_admin
+        FROM posts p
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN profiles pr ON p.user_id = pr.id
+        WHERE p.content ILIKE ${`%${search}%`}
+        ORDER BY p.is_announcement DESC, p.created_at DESC
+      `
+    } else {
+      posts = await sql`
+        SELECT 
+          p.*,
+          u.email,
+          u.created_at as user_created_at,
+          pr.student_id,
+          pr.real_name,
+          pr.is_verified,
+          pr.is_admin
+        FROM posts p
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN profiles pr ON p.user_id = pr.id
+        ORDER BY p.is_announcement DESC, p.created_at DESC
+      `
     }
-
-    query += ` ORDER BY p.is_announcement DESC, p.created_at DESC`
-
-    const posts = await sql(query, ...params)
 
     // 格式化返回数据
     const formattedPosts = posts.map((post: Record<string, unknown>) => ({
@@ -67,7 +74,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await auth()
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: '未授权' }, { status: 401 })

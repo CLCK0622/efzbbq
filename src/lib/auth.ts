@@ -1,9 +1,9 @@
-import { NextAuthConfig } from "next-auth"
+import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { sql } from './db'
 import bcrypt from 'bcryptjs'
 
-export const authConfig: NextAuthConfig = {
+const authConfig = {
   providers: [
     Credentials({
       name: "credentials",
@@ -53,7 +53,7 @@ export const authConfig: NextAuthConfig = {
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
       if (user) {
         token.student_id = user.student_id
         token.is_verified = user.is_verified
@@ -61,21 +61,25 @@ export const authConfig: NextAuthConfig = {
       }
       return token
     },
-    async session({ session, token }) {
-      if (token) {
+    async session({ session, token }: { session: any; token: any }) { // eslint-disable-line @typescript-eslint/no-explicit-any
+      if (token && token.sub) {
         session.user.id = token.sub
-        session.user.student_id = token.student_id
-        session.user.is_verified = token.is_verified
-        session.user.is_admin = token.is_admin
+        session.user.student_id = token.student_id as string
+        session.user.is_verified = token.is_verified as boolean
+        session.user.is_admin = token.is_admin as boolean
       }
       return session
     }
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
   },
   session: {
-    strategy: "jwt"
+    strategy: "jwt" as const
   }
-} 
+}
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig)
+export { authConfig } 
+
+ 

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { signIn } from 'next-auth/react'
 import { Form, Input, Button, Card, Typography, Divider, message } from 'antd'
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
 
 const { Title, Text } = Typography
 
@@ -18,13 +18,14 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
   const onFinish = async (values: { email: string; password: string }) => {
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const result = await signIn('credentials', {
         email: values.email,
         password: values.password,
+        redirect: false,
       })
 
-      if (error) {
-        message.error(error.message)
+      if (result?.error) {
+        message.error(result.error)
       } else {
         message.success('登录成功！')
         window.location.reload()

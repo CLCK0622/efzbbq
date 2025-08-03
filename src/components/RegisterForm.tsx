@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
 import { Form, Input, Button, Card, Typography, Divider, message } from 'antd'
 import { UserOutlined, LockOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons'
 
@@ -23,38 +22,21 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
   }) => {
     setLoading(true)
     try {
-      // 注册用户
-      const { data, error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
       })
 
-      if (error) {
-        message.error(error.message)
-        return
-      }
+      const result = await response.json()
 
-      if (data.user) {
-        // 创建用户档案
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            {
-              id: data.user.id,
-              email: values.email,
-              student_id: values.student_id,
-              real_name: values.real_name,
-              is_verified: false,
-            },
-          ])
-
-        if (profileError) {
-          message.error('创建用户档案失败')
-          return
-        }
-
-        message.success('注册成功！请检查邮箱并验证您的账户。')
+      if (response.ok) {
+        message.success(result.message)
         onSwitchToLogin()
+      } else {
+        message.error(result.error || '注册失败，请重试')
       }
     } catch (error) {
       message.error('注册失败，请重试')
@@ -114,8 +96,8 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
             name="student_id"
             rules={[
               { required: true, message: '请输入学号' },
-              { len: 8, message: '学号必须是8位数字' },
-              { pattern: /^\d{8}$/, message: '学号必须是8位数字' }
+              { len: 9, message: '学号必须是9位数字' },
+              { pattern: /^\d{9}$/, message: '学号必须是9位数字' }
             ]}
           >
             <Input

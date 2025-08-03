@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from "next-auth/next"
-import { authConfig } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { sql } from '@/lib/db'
 
 export async function GET(
@@ -67,7 +66,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
+    const session = await auth()
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: '未授权' }, { status: 401 })

@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from "next-auth/next"
-import { authConfig } from "@/lib/auth"
+import { auth } from "@/lib/auth"
 import { sql } from '@/lib/db'
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
+    const session = await auth()
     
     if (!session?.user?.id) {
       console.log('认证失败: 用户未登录')
@@ -57,7 +56,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
+    const session = await auth()
     
     if (!session?.user?.id) {
       console.log('认证失败: 用户未登录')
@@ -111,7 +110,7 @@ export async function GET(request: NextRequest) {
     console.log('点赞数查询成功:', count)
 
     // 检查当前用户是否已点赞
-    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
+    const session = await auth()
     let isLiked = false
 
     if (session?.user?.id) {
