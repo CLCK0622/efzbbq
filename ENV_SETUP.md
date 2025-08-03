@@ -10,8 +10,8 @@ DATABASE_URL="postgresql://username:password@host:port/database"
 
 # NextAuth 配置
 AUTH_SECRET="your-secret-key-here"
-AUTH_URL="http://localhost:3000"
-NEXTAUTH_URL="http://localhost:3000"
+AUTH_URL="https://efzbbq.top"
+NEXTAUTH_URL="https://efzbbq.top"
 
 # 邮件服务配置（用于邮箱验证）
 RESEND_API_KEY="re_hiEAK2Sq_474AMj3PNK4uq97CWokTFpse"

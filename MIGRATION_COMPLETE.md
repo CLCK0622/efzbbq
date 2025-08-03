@@ -60,8 +60,8 @@ DATABASE_URL="postgresql://neondb_owner:npg_uNhE1OeGaBx3@ep-withered-dew-a1y9kh3
 
 # NextAuth 配置
 AUTH_SECRET="your-secret-key-here"
-AUTH_URL="http://localhost:3000"
-NEXTAUTH_URL="http://localhost:3000"
+AUTH_URL="https://efzbbq.top"
+NEXTAUTH_URL="https://efzbbq.top"
 
 # 邮件服务配置
 RESEND_API_KEY="re_hiEAK2Sq_474AMj3PNK4uq97CWokTFpse"

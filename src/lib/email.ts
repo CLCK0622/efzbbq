@@ -38,7 +38,7 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
     console.log('Sending verification email to:', data.email)
     
     const { data: result, error } = await resend.emails.send({
-      from: '张江多功能墙 <onboarding@resend.dev>',
+      from: '张江多功能墙 <noreply@efzbbq.top>',
       to: data.email,
       subject: '验证您的张江多功能墙账号',
       html: `
@@ -114,7 +114,7 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
     console.log('Sending welcome email to:', data.email)
     
     const { data: result, error } = await resend.emails.send({
-      from: '张江多功能墙 <onboarding@resend.dev>',
+      from: '张江多功能墙 <noreply@efzbbq.top>',
       to: data.email,
       subject: '欢迎加入张江多功能墙！',
       html: `
@@ -142,7 +142,7 @@ export async function sendWelcomeEmail(data: WelcomeEmailData) {
             </div>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="http://localhost:3000" 
+              <a href="https://efzbbq.top" 
                  style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
                         color: white; 
                         padding: 15px 30px; 
