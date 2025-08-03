@@ -24,3 +24,23 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 强制 Ant Design Header 使用白色背景 */
+.ant-layout-header {
+  background: white !important;
+  background-color: white !important;
+  color: #1f2937 !important;
+}
+
+/* 确保所有文本在白色背景上可见 */
+.ant-layout-header .ant-typography {
+  color: #1f2937 !important;
+}
+
+.ant-layout-header .ant-btn {
+  color: #374151 !important;
+}
+
+.ant-layout-header .ant-btn:hover {
+  color: #111827 !important;
+}
