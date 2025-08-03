@@ -4,10 +4,13 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { Form, Input, Button, Card, Typography, message } from 'antd'
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 
 const { Title, Text } = Typography
+
+// 禁用预渲染
+export const dynamic = 'force-dynamic'
 
 export default function SignInPage() {
   const [loading, setLoading] = useState(false)

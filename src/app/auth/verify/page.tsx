@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Card, Typography, Button, Result, message } from 'antd'
+import { Card, Typography, Button, Result } from 'antd'
 import { CheckCircleOutlined, ExclamationCircleOutlined, MailOutlined } from '@ant-design/icons'
-import Link from 'next/link'
 
 const { Title, Text } = Typography
+
+// 禁用预渲染
+export const dynamic = 'force-dynamic'
 
 export default function VerifyPage() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')

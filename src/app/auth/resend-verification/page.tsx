@@ -8,6 +8,9 @@ import Link from 'next/link'
 
 const { Title, Text } = Typography
 
+// 禁用预渲染
+export const dynamic = 'force-dynamic'
+
 export default function ResendVerificationPage() {
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
