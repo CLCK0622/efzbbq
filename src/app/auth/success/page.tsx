@@ -5,6 +5,9 @@ import { useSearchParams } from 'next/navigation'
 import { CheckCircle, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+// 禁用预渲染
+export const dynamic = 'force-dynamic'
+
 export default function AuthSuccessPage() {
   const searchParams = useSearchParams()
   const message = searchParams.get('message')

@@ -4,6 +4,9 @@ import { useSearchParams } from 'next/navigation'
 import { XCircle, ArrowLeft, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 
+// 禁用预渲染
+export const dynamic = 'force-dynamic'
+
 export default function AuthErrorPage() {
   const searchParams = useSearchParams()
   const message = searchParams.get('message')
