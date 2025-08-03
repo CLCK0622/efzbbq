@@ -5,16 +5,17 @@ import { sql } from '@/lib/db'
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: '未授权' }, { status: 401 })
     }
 
-    const { id } = params
+
 
     // 检查评论是否存在
     const comments = await sql`

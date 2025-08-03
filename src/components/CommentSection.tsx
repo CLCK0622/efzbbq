@@ -120,7 +120,7 @@ export default function CommentSection({ postId, onUpdate }: CommentSectionProps
     }
   }
 
-  const getAnonymityText = (level: AnonymityLevel, user: any) => {
+  const getAnonymityText = (level: AnonymityLevel, user: { real_name?: string; student_id?: string } | undefined) => {
     switch (level) {
       case 'full':
         return '匿名'

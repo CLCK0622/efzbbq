@@ -11,7 +11,7 @@ interface SearchResult {
   url: string
   title: string
   excerpt: string
-  meta: any
+  meta: Record<string, unknown>
 }
 
 export default function SearchComponent() {

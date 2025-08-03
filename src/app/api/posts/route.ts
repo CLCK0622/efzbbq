@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
       WHERE 1=1
     `
 
-    const params: any[] = []
+    const params: string[] = []
 
     if (search) {
       query += ` AND p.content ILIKE $${params.length + 1}`
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     const posts = await sql(query, ...params)
 
     // 格式化返回数据
-    const formattedPosts = posts.map((post: any) => ({
+    const formattedPosts = posts.map((post: Record<string, unknown>) => ({
       id: post.id,
       user_id: post.user_id,
       content: post.content,

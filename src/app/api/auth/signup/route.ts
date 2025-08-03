@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     // 发送验证邮件
     const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify?token=${token}`
-    const emailSent = await sendVerificationEmail({
+    await sendVerificationEmail({
       email,
       name: real_name,
       verificationUrl

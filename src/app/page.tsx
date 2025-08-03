@@ -91,7 +91,7 @@ export default function HomePage() {
                   description={
                     <ul className="list-decimal list-inside space-y-1">
                       <li>检查您的邮箱（包括垃圾邮件文件夹）</li>
-                      <li>点击邮件中的"验证邮箱地址"按钮</li>
+                      <li>点击邮件中的&quot;验证邮箱地址&quot;按钮</li>
                       <li>验证成功后即可登录使用</li>
                     </ul>
                   }

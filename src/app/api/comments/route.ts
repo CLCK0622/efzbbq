@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
     `
 
     // 格式化返回数据
-    const formattedComments = comments.map((comment: any) => ({
+    const formattedComments = comments.map((comment: Record<string, unknown>) => ({
       id: comment.id,
       post_id: comment.post_id,
       user_id: comment.user_id,
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig)
+    const session = await getServerSession(authConfig) as { user: { id: string; is_admin?: boolean } } | null
 
     if (!session?.user?.id) {
       return NextResponse.json({ error: '未授权' }, { status: 401 })

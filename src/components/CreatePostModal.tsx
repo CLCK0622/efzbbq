@@ -12,7 +12,8 @@ import {
   Button, 
   message, 
   Progress,
-  Spin
+  Spin,
+  UploadFile
 } from 'antd'
 import { UploadOutlined, LoadingOutlined } from '@ant-design/icons'
 
@@ -28,7 +29,7 @@ interface CreatePostModalProps {
 export default function CreatePostModal({ open, onCancel, onSuccess }: CreatePostModalProps) {
   const { data: session } = useSession()
   const [form] = Form.useForm()
-  const [fileList, setFileList] = useState<any[]>([])
+  const [fileList, setFileList] = useState<UploadFile[]>([])
   const [uploadProgress, setUploadProgress] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -42,13 +43,13 @@ export default function CreatePostModal({ open, onCancel, onSuccess }: CreatePos
   }
 
   // 处理图片上传
-  const handleImageChange = ({ fileList }: any) => {
+  const handleImageChange = ({ fileList }: { fileList: UploadFile[] }) => {
     setFileList(fileList)
   }
 
   // 处理图片预览
-  const handleImagePreview = async (file: any) => {
-    if (!file.url && !file.preview) {
+  const handleImagePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview && file.originFileObj) {
       file.preview = await getBase64(file.originFileObj)
     }
   }

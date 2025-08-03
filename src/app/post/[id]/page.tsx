@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import { Post } from '@/types'
 import PostCard from '@/components/PostCard'
 import Layout from '@/components/Layout'
@@ -25,16 +24,11 @@ export default function PostDetailPage() {
 
   const fetchPost = async () => {
     try {
-      const { data, error } = await supabase
-        .from('posts')
-        .select(`
-          *,
-          user:profiles(student_id, real_name, is_verified)
-        `)
-        .eq('id', postId)
-        .single()
-
-      if (error) throw error
+      const response = await fetch(`/api/posts/${postId}`)
+      if (!response.ok) {
+        throw new Error('Post not found')
+      }
+      const data = await response.json()
       setPost(data)
     } catch (error) {
       console.error('Error fetching post:', error)
@@ -90,7 +84,7 @@ export default function PostDetailPage() {
         <div className="space-y-6">
           {/* 帖子卡片 */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <PostCard post={post} onUpdate={fetchPost} hideComments={false} />
+            <PostCard post={post} onUpdate={fetchPost} />
           </div>
         </div>
       </div>
